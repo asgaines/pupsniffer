@@ -12,9 +12,9 @@ See the new rescue pups added to Boulder Humane Society's website
 
 `pupsniffer -h`
 
-### Make Archive
+### Make Kennel
 
-An archive is where the past scrapes are stored, used in a comparison against during new scrapes to show only the new pups.
+A kennel is an archive of past scrapes, used in a comparison against during new scrapes to show only the new pups.
 
 `mkdir -p ~/.pupsniffer/kennel`
 

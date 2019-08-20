@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"os/user"
 
 	"github.com/asgaines/pupsniffer/pupservice"
 	"github.com/asgaines/pupsniffer/pupservice/fetcher"
@@ -36,9 +37,18 @@ func init() {
 }
 
 func main() {
+	usr, err := user.Current()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	var kennelPath string
-	flag.StringVar(&kennelPath, "kennel", "./kennel", "Path to kennel (where previous searches are stored for comparison)")
+	flag.StringVar(&kennelPath, "kennel", fmt.Sprintf("%s/.config/pupsniffer/kennel", usr.HomeDir), "Path to kennel (where previous searches are stored for comparison)")
 	flag.Parse()
+
+	if err := os.MkdirAll(kennelPath, os.ModePerm); err != nil {
+		log.Fatal(err)
+	}
 
 	ctx := context.Background()
 

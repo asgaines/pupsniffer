@@ -56,20 +56,20 @@ type Pup struct {
 	Photo3 null.String `json:"Photo3"` // {
 	// "0": "\n  "
 	// }, OR "http:\/\/g.petango.com\/photos\/993\/ffb2899b-c7c2-48b1-b5a0-4a976e455fdd.jpg",
-	OnHold       string            `json:"OnHold"`       // "No",
-	SpecialNeeds map[string]string `json:"SpecialNeeds"` // {
+	OnHold       string      `json:"OnHold"`       // "No",
+	SpecialNeeds null.String `json:"SpecialNeeds"` // {
 	// "0": "\n  "
 	// },
-	NoDogs map[string]string `json:"NoDogs"` // {
+	NoDogs null.String `json:"NoDogs"` // {
 	// "0": "\n  "
 	// },
-	NoCats map[string]string `json:"NoCats"` // {
+	NoCats null.String `json:"NoCats"` // {
 	// "0": "\n  "
 	// },
-	NoKids map[string]string `json:"NoKids"` // {
+	NoKids null.String `json:"NoKids"` // {
 	// "0": "\n  "
 	// },
-	BehaviorResult map[string]string `json:"BehaviorResult"` // {
+	BehaviorResult null.String `json:"BehaviorResult"` // {
 	// "0": "\n  "
 	// },
 	MemoList         interface{} `json:"MemoList"`         // {},
@@ -81,28 +81,28 @@ type Pup struct {
 	ReasonForSurrender null.String `json:"ReasonForSurrender"` // {
 	// "0": "\n  "
 	// }, OR "Behavioral",
-	PrevEnvironment      string            `json:"PrevEnvironment"`      // "Unknown                       ",
-	LivedWithChildren    string            `json:"LivedWithChildren"`    // "No",
-	LivedWithAnimals     string            `json:"LivedWithAnimals"`     // "No",
-	LivedWithAnimalTypes map[string]string `json:"LivedWithAnimalTypes"` // {
+	PrevEnvironment      string      `json:"PrevEnvironment"`      // "Unknown                       ",
+	LivedWithChildren    string      `json:"LivedWithChildren"`    // "No",
+	LivedWithAnimals     string      `json:"LivedWithAnimals"`     // "No",
+	LivedWithAnimalTypes null.String `json:"LivedWithAnimalTypes"` // {
 	// "0": "\n  "
 	// },
-	BodyWeight  string            `json:"BodyWeight"`  // "82 pounds",
-	DateOfBirth string            `json:"DateOfBirth"` // "2016-05-20",
-	ARN         map[string]string `json:"ARN"`         // {
+	BodyWeight  string      `json:"BodyWeight"`  // "82 pounds",
+	DateOfBirth string      `json:"DateOfBirth"` // "2016-05-20",
+	ARN         null.String `json:"ARN"`         // {
 	// "0": "\n  "
 	// },
-	VideoID map[string]string `json:"VideoID"` // {
+	VideoID null.String `json:"VideoID"` // {
 	// "0": "\n  "
 	// },
-	BehaviorTestList     interface{}       `json:"BehaviorTestList"`     // {},
-	Stage                string            `json:"Stage"`                // "Available",
-	AnimalType           string            `json:"AnimalType"`           // "Dog",
-	AgeGroup             string            `json:"AgeGroup"`             // "Adult",
-	WildlifeIntakeInjury map[string]string `json:"WildlifeIntakeInjury"` // {
+	BehaviorTestList     interface{} `json:"BehaviorTestList"`     // {},
+	Stage                string      `json:"Stage"`                // "Available",
+	AnimalType           string      `json:"AnimalType"`           // "Dog",
+	AgeGroup             string      `json:"AgeGroup"`             // "Adult",
+	WildlifeIntakeInjury null.String `json:"WildlifeIntakeInjury"` // {
 	// "0": "\n  "
 	// },
-	WildlifeIntakeCause map[string]string `json:"WildlifeIntakeCause"` // {
+	WildlifeIntakeCause null.String `json:"WildlifeIntakeCause"` // {
 	// "0": "\n  "
 	// },
 	BuddyID     string      `json:"BuddyID"`     // "0",
@@ -114,7 +114,7 @@ type Pup struct {
 	ColorPattern null.String `json:"ColorPattern"` // {
 	// "0": "\n  "
 	// }, OR "Tick"
-	AdoptionApplicationURL map[string]string `json:"AdoptionApplicationUrl"` // {
+	AdoptionApplicationURL null.String `json:"AdoptionApplicationUrl"` // {
 	// "0": "\n  "
 	// },
 	BannerURL string `json:"BannerURL"` // "https:\/\/ws.petango.com\/webservices\/adoptablesearch\/images\/24PW-Web-Services-Graphic-Trial.png"
@@ -146,9 +146,12 @@ func (p Pup) BarkGreeting() {
 
 	p.barkName()
 	p.barkAge()
+	p.barkSex()
 	p.barkWeight()
 	p.barkBreed()
 	p.barkDesc()
+	p.barkReasonForSurrender()
+	p.barkSpecialNeeds()
 	p.barkPics()
 
 	fmt.Println()
@@ -194,6 +197,10 @@ func (p Pup) barkAge() {
 	}
 }
 
+func (p Pup) barkSex() {
+	fmt.Printf("I'm a %s\n", p.Sex)
+}
+
 func (p Pup) barkWeight() {
 	fmt.Printf("I'm %s\n", p.BodyWeight)
 }
@@ -210,7 +217,19 @@ func (p Pup) barkBreed() {
 
 func (p Pup) barkDesc() {
 	if p.Description.Valid {
-		fmt.Printf("Here's what people say about me:\n%s\n", p.Description.Value)
+		fmt.Printf("Here's what people say about me: \"%s\n\"", p.Description.Value)
+	}
+}
+
+func (p Pup) barkReasonForSurrender() {
+	if p.ReasonForSurrender.Valid {
+		fmt.Printf("Here's why I'm here: %s\n", p.ReasonForSurrender.Value)
+	}
+}
+
+func (p Pup) barkSpecialNeeds() {
+	if p.SpecialNeeds.Valid {
+		fmt.Printf("My special needs: %s\n", p.SpecialNeeds.Value)
 	}
 }
 

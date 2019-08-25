@@ -3,8 +3,8 @@ package pupservice
 import (
 	"context"
 
-	"github.com/asgaines/pupsniffer/pup"
-	"github.com/asgaines/pupsniffer/pupservice/fetcher"
+	"github.com/asgaines/pupsniffr/pup"
+	"github.com/asgaines/pupsniffr/pupservice/fetcher"
 )
 
 type PupService interface {

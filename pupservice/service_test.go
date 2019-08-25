@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.com/asgaines/pupsniffer/pupservice/fetcher"
+	"github.com/asgaines/pupsniffr/pupservice/fetcher"
 )
 
 type mockFetcher struct {

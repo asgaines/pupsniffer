@@ -1,1 +1,1 @@
-module github.com/asgaines/pupsniffer
+module github.com/asgaines/pupsniffr

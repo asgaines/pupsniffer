@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/asgaines/pupsniffer/null"
+	"github.com/asgaines/pupsniffr/null"
 )
 
 // WoofASCII holds the data for the pup ascii picture

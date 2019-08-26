@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/asgaines/pupsniffr/pup"
+	"github.com/asgaines/pupsniffer/pup"
 )
 
 func ParsePups(j []byte) ([]int, error) {

@@ -9,7 +9,7 @@ import (
 	"path"
 	"time"
 
-	"github.com/asgaines/pupsniffr/config"
+	"github.com/asgaines/pupsniffer/config"
 )
 
 type Fetcher interface {

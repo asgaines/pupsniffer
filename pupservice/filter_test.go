@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/asgaines/pupsniffr/pup"
+	"github.com/asgaines/pupsniffer/pup"
 )
 
 func TestFilterPups(t *testing.T) {

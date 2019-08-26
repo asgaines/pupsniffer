@@ -1,4 +1,4 @@
-# Pupsniffr
+# Pupsniffer
 
 See the new rescue pups added to Boulder Humane Society's website
 
@@ -6,12 +6,12 @@ See the new rescue pups added to Boulder Humane Society's website
 
 ### Install
 
-`go install github.com/asgaines/pupsniffr`
+`go install github.com/asgaines/pupsniffer`
 
 ### CLI Usage
 
-`pupsniffr -h`
+`pupsniffer -h`
 
 ### Get Sniffed
 
-`pupsniffr`
+`pupsniffer`

@@ -4,8 +4,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/asgaines/pupsniffr/null"
-	"github.com/asgaines/pupsniffr/pup"
+	"github.com/asgaines/pupsniffer/null"
+	"github.com/asgaines/pupsniffer/pup"
 )
 
 func TestPupReport(t *testing.T) {

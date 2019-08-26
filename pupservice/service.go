@@ -4,8 +4,8 @@ import (
 	"context"
 	"io"
 
-	"github.com/asgaines/pupsniffr/pup"
-	"github.com/asgaines/pupsniffr/pupservice/fetcher"
+	"github.com/asgaines/pupsniffer/pup"
+	"github.com/asgaines/pupsniffer/pupservice/fetcher"
 )
 
 type PupService interface {

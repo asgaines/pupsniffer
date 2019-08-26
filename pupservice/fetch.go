@@ -3,7 +3,7 @@ package pupservice
 import (
 	"context"
 
-	"github.com/asgaines/pupsniffr/pup"
+	"github.com/asgaines/pupsniffer/pup"
 )
 
 func (p *pupsvc) FetchPupIDs(ctx context.Context) ([]int, error) {

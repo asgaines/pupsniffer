@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/asgaines/pupsniffr/null"
-	"github.com/asgaines/pupsniffr/utils"
+	"github.com/asgaines/pupsniffer/null"
+	"github.com/asgaines/pupsniffer/utils"
 )
 
 // WoofASCII holds the data for the pup ascii picture

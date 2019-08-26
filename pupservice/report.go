@@ -5,7 +5,7 @@ import (
 	"io"
 	"path"
 
-	"github.com/asgaines/pupsniffr/pup"
+	"github.com/asgaines/pupsniffer/pup"
 )
 
 func (p pupsvc) PupReport(total int, pups []*pup.Pup, wr io.Writer) error {

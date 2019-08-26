@@ -1,6 +1,6 @@
 package pupservice
 
-import "github.com/asgaines/pupsniffr/pup"
+import "github.com/asgaines/pupsniffer/pup"
 
 func (p *pupsvc) FilterPups(pups []*pup.Pup) ([]*pup.Pup, error) {
 	filteredPups := []*pup.Pup{}

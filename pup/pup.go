@@ -5,8 +5,10 @@ import (
 	"log"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/asgaines/pupsniffr/null"
+	"github.com/asgaines/pupsniffr/utils"
 )
 
 // WoofASCII holds the data for the pup ascii picture
@@ -142,24 +144,31 @@ func (p Pup) BarkGreeting() {
 	fmt.Println()
 	fmt.Println()
 
-	p.barkAscii()
+	p.barkASCII()
 
 	p.barkName()
-	p.barkAge()
+	fmt.Printf("I'm %s old\n", p.BarkAge())
 	p.barkSex()
 	p.barkWeight()
-	p.barkBreed()
+	fmt.Printf("I'm a %s", p.BarkBreed())
 	p.barkDesc()
 	p.barkReasonForSurrender()
 	p.barkSpecialNeeds()
-	p.barkPics()
+	pics := p.BarkPics()
+
+	if len(pics) > 0 {
+		fmt.Println("Wanna see pictures of me?")
+		for _, pic := range pics {
+			fmt.Println(pic)
+		}
+	}
 
 	fmt.Println()
 	fmt.Println()
 	fmt.Println()
 }
 
-func (p Pup) barkAscii() {
+func (p Pup) barkASCII() {
 	fmt.Println(WoofASCII)
 }
 
@@ -167,34 +176,33 @@ func (p Pup) barkName() {
 	fmt.Printf("My name is %v\n", p.AnimalName)
 }
 
-func (p Pup) barkAge() {
+func (p Pup) BarkAge() string {
 	months, err := strconv.Atoi(p.Age)
 	if err != nil {
 		log.Println(err)
-		fmt.Println("They're not sure how old I am...")
-		return
+		return "They're not sure how old I am..."
 	}
 
 	if months < 12 {
-		fmt.Printf("I'm %d months old\n", months)
-	} else {
-		years := months / 12
-		remainder := months % 12
-
-		s := fmt.Sprintf("I'm %d year", years)
-		if years > 1 {
-			s += "s"
-		}
-
-		if remainder > 0 {
-			s += fmt.Sprintf(" and %d month", remainder)
-		}
-		if remainder > 1 {
-			s += "s"
-		}
-
-		fmt.Printf("%s old\n", s)
+		return fmt.Sprintf("%d months", months)
 	}
+
+	years := months / 12
+	remainder := months % 12
+
+	s := fmt.Sprintf("%d year", years)
+	if years > 1 {
+		s += "s"
+	}
+
+	if remainder > 0 {
+		s += fmt.Sprintf(" and %d month", remainder)
+	}
+	if remainder > 1 {
+		s += "s"
+	}
+
+	return s
 }
 
 func (p Pup) barkSex() {
@@ -205,14 +213,38 @@ func (p Pup) barkWeight() {
 	fmt.Printf("I'm %s\n", p.BodyWeight)
 }
 
-func (p Pup) barkBreed() {
-	s := fmt.Sprintf("I'm a %s", p.PrimaryBreed)
+func (p Pup) BarkBreed() string {
+	s := fmt.Sprintf("%s", p.PrimaryBreed)
 
 	if p.SecondaryBreed.Valid {
 		s += fmt.Sprintf(" %s", p.SecondaryBreed.Value)
 	}
 
-	fmt.Println(s)
+	return s
+}
+
+func (p Pup) BarkTimeSince() (string, error) {
+	intakeTime, err := time.Parse("2006-01-02 15:04:05", p.LastIntakeDate)
+	if err != nil {
+		return "", err
+	}
+
+	duration := time.Since(intakeTime)
+
+	days := duration.Hours() / 24
+	if days > 0 {
+		return fmt.Sprintf("%d %s", int(days), utils.Pluralize("day", "days", int(days))), nil
+	}
+
+	if duration.Hours() > 0 {
+		return fmt.Sprintf("%d %s", int(duration.Hours()), utils.Pluralize("hour", "hours", int(duration.Hours()))), nil
+	}
+
+	if duration.Minutes() > 0 {
+		return fmt.Sprintf("%d %s", int(duration.Minutes()), utils.Pluralize("minute", "minutes", int(duration.Minutes()))), nil
+	}
+
+	return fmt.Sprintf("%d %s", int(duration.Seconds()), utils.Pluralize("second", "seconds", int(duration.Seconds()))), nil
 }
 
 func (p Pup) barkDesc() {
@@ -233,7 +265,19 @@ func (p Pup) barkSpecialNeeds() {
 	}
 }
 
-func (p Pup) barkPics() {
+func (p Pup) BarkDeclawed() (bool, error) {
+	if p.Declawed == "Yes" {
+		return true, nil
+	}
+
+	if p.Declawed == "No" {
+		return false, nil
+	}
+
+	return false, fmt.Errorf("Unexpected value for Declawed: %s", p.Declawed)
+}
+
+func (p Pup) BarkPics() []string {
 	pics := []string{}
 
 	for _, photo := range []null.String{p.Photo1, p.Photo2, p.Photo3} {
@@ -243,10 +287,5 @@ func (p Pup) barkPics() {
 		}
 	}
 
-	if len(pics) > 0 {
-		fmt.Println("Wanna see pictures of me?")
-		for _, pic := range pics {
-			fmt.Println(pic)
-		}
-	}
+	return pics
 }

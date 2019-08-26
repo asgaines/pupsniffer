@@ -16,7 +16,7 @@ type mockFetcher struct {
 func newMockPupSvc() PupService {
 	return New(&mockFetcher{
 		Fetcher: fetcher.NewFetcher(),
-	}, "testdata/kennel")
+	}, "testdata/kennel", "../static")
 }
 
 func (m *mockFetcher) FetchPack(ctx context.Context) ([]byte, error) {

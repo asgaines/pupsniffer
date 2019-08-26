@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pupsniffr</title>
+    </head>
+    <body style="background: #EAEAFF;">
+        <div style="width: 1400px; margin-left: auto; margin-right: auto;">
+            <div style="background: #FFFFFF; margin-top: 10px; margin-bottom: 10px; padding: 20px; text-align: center;">
+                <h1>Pupsniffr</h1>
+                <h2>get sniffd</h2>
+            </div>
+
+            {{range .Pups}}
+                <div style="background: #FFFFFF; margin-top: 30px; margin-bottom: 30px; margin-left: auto; margin-right: auto; padding: 20px;">
+                    <h3>My name is {{.AnimalName}}</h3>
+
+                    {{if .IsAvailable}}
+                        <h4 style="color: #22AA22">I'm available!</h4>
+                    {{else}}
+                        <h4 style="color: #AA2222">I'm not available...</h4>
+                    {{end}}
+
+                    <p>I'm a {{.Sex}}</p>
+                    
+                    <p>I'm {{.BarkAge}} old</p>
+                    
+                    <p>I'm {{.BodyWeight}}</p>
+                    
+                    <p>I'm a {{.BarkBreed}}</p>
+
+                    <p>I've been here for {{.BarkTimeSince}} ({{.LastIntakeDate}})</p>
+                    
+                    {{if .Description.Valid}}
+                        <p>Here's what people say about me: "{{.Description.Value}}"</p>
+                    {{end}}
+                    
+                    {{if .SpecialNeeds.Valid}}
+                        <p>My special needs: {{.SpecialNeeds.Value}}</p>
+                    {{end}}
+
+                    {{if .BarkDeclawed}}
+                        <p>I've been declawed</p>
+                    {{else}}
+                        <p>I haven't been declawed</p>
+                    {{end}}
+
+                    <p>Have I been housetrained? {{.Housetrained}}</p>
+
+                    {{if .NoDogs.Valid}}
+                        <p>People say this about me with other dogs: {{.NoDogs.Value}}</p>
+                    {{end}}
+
+                    {{if .NoCats.Valid}}
+                        <p>People say this about me with cats: {{.NoCats.Value}}</p>
+                    {{end}}
+
+                    {{if .NoKids.Valid}}
+                        <p>People say this about me with kids: {{.NoKids.Value}}</p>
+                    {{end}}
+
+                    {{if .BehaviorResult.Valid}}
+                        <p>This is my behavior result: {{.BehaviorResult.Value}}</p>
+                    {{end}}
+
+                    {{if .TimeInFormerHome.Valid}}
+                            <p>I spent {{.TimeInFormerHome.Value}} in my former home</p>
+                    {{end}}
+                    
+                    {{if .ReasonForSurrender.Valid}}
+                        <p>Here's why I'm here: {{.ReasonForSurrender.Value}}</p>
+                    {{end}}
+
+                    {{if .WildlifeIntakeInjury.Valid}}
+                            <p>My wildlife intake injury: {{.WildlifeIntakeInjury.Value}}</p>
+                    {{end}}
+
+                    {{if .WildlifeIntakeCause.Valid}}
+                            <p>My wild intake cause: {{.WildlifeIntakeCause.Value}}</p>
+                    {{end}}
+
+                    <p>You can bring me home for ${{.Price}}</p>
+                
+                    {{if .AdoptionApplicationURL.Valid}}
+                            <p>My application url: {{.AdoptionApplicationURL.Value}}</p>
+                    {{end}}
+
+                    {{range .BarkPics}}
+                        <img src="{{.}}" />
+                    {{end}}
+
+                    <p>(My ID number is {{.ID}})</p>
+
+                    {{if .ChipNumber.Valid}}
+                        <p>(My chip number is {{.ChipNumber.Value}})</p>
+                    {{end}}
+                </div>
+            {{end}}
+        </div>
+    </body>
+</html>

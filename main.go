@@ -43,7 +43,13 @@ func main() {
 	}
 
 	var kennelPath string
+	var filterPups bool
+	var newOnly bool
+
 	flag.StringVar(&kennelPath, "kennel", fmt.Sprintf("%s/.config/pupsniffr/kennel", usr.HomeDir), "Path to kennel (where previous searches are stored for comparison)")
+	flag.BoolVar(&filterPups, "filter", true, "Should pups be filtered?")
+	flag.BoolVar(&newOnly, "newonly", true, "Only show pups not before seen?")
+
 	flag.Parse()
 
 	if err := os.MkdirAll(kennelPath, os.ModePerm); err != nil {
@@ -55,47 +61,57 @@ func main() {
 	pupsvc := pupservice.New(
 		fetcher.NewFetcher(),
 		kennelPath,
+		"./static",
 	)
 
 	pupIDs, err := pupsvc.FetchPupIDs(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
+	numTotalPups := len(pupIDs)
 
-	if len(pupIDs) == 0 {
-		fmt.Printf("There aren't any pups at the Boulder Humane Society right now...")
+	if numTotalPups == 0 {
+		log.Println("There aren't any pups at the Boulder Humane Society right now...")
 		os.Exit(0)
 	}
 
-	fmt.Printf("%d %s at the Boulder Humane Society right now\n", len(pupIDs), utils.Pluralize("pup", "pups", len(pupIDs)))
+	log.Printf("%d %s at the Boulder Humane Society right now\n", len(pupIDs), utils.Pluralize("pup", "pups", len(pupIDs)))
 
-	newPupIDs, err := pupsvc.SniffOutNew(pupIDs)
-	if err != nil {
-		log.Fatal(err)
-	}
+	if newOnly {
+		newPupIDs, err := pupsvc.SniffOutNew(pupIDs)
+		if err != nil {
+			log.Fatal(err)
+		}
 
-	if len(newPupIDs) == 0 {
-		fmt.Println("Looks like you've already seen all the pups currently at the center. Check back soon!")
-		os.Exit(0)
+		if len(newPupIDs) == 0 {
+			log.Println("Looks like you've already seen all the pups currently at the center. Check back soon!")
+			os.Exit(0)
+		}
+
+		pupIDs = newPupIDs
 	}
 
 	if err := pupsvc.KennelPups(pupIDs); err != nil {
 		log.Fatal(err)
 	}
 
-	newPups, err := pupsvc.FetchPups(ctx, newPupIDs)
+	pups, err := pupsvc.FetchPups(ctx, pupIDs)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	filteredPups, err := pupsvc.FilterPups(newPups)
-	if err != nil {
-		log.Fatal(err)
+	if filterPups {
+		filteredPups, err := pupsvc.FilterPups(pups)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		log.Printf("%d/%d new %s %s your criteria!\n", len(filteredPups), len(pups), utils.Pluralize("pup", "pups", len(filteredPups)), utils.Pluralize("meets", "meet", len(filteredPups)))
+
+		pups = filteredPups
 	}
 
-	fmt.Printf("%d/%d new %s %s your criteria!\n", len(filteredPups), len(newPups), utils.Pluralize("pup", "pups", len(filteredPups)), utils.Pluralize("meets", "meet", len(filteredPups)))
-
-	for _, pup := range filteredPups {
-		pup.BarkGreeting()
+	if err := pupsvc.PupReport(numTotalPups, pups, os.Stdout); err != nil {
+		log.Fatal(err)
 	}
 }

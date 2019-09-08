@@ -1,6 +1,8 @@
 package main
 
 import (
+	"bufio"
+	"bytes"
 	"context"
 	"flag"
 	"fmt"
@@ -45,10 +47,12 @@ func main() {
 	var kennelPath string
 	var filterPups bool
 	var newOnly bool
+	var email bool
 
 	flag.StringVar(&kennelPath, "kennel", fmt.Sprintf("%s/.config/pupsniffer/kennel", usr.HomeDir), "Path to kennel (where previous searches are stored for comparison)")
 	flag.BoolVar(&filterPups, "filter", true, "Should pups be filtered?")
 	flag.BoolVar(&newOnly, "newonly", true, "Only show pups not before seen?")
+	flag.BoolVar(&email, "email", false, "Send report to email")
 
 	flag.Parse()
 
@@ -111,7 +115,25 @@ func main() {
 		pups = filteredPups
 	}
 
-	if err := pupsvc.PupReport(numTotalPups, pups, os.Stdout); err != nil {
+	buf := &bytes.Buffer{}
+
+	if err := pupsvc.PupReport(numTotalPups, pups, buf); err != nil {
+		log.Fatal(err)
+	}
+
+	if len(pups) > 0 && email {
+		recipients := []string{
+			"andrew.s.gaines@gmail.com",
+		}
+		if err := pupsvc.Mailman(buf, recipients); err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	outf := bufio.NewWriter(os.Stdout)
+	defer outf.Flush()
+	_, err = outf.Write(buf.Bytes())
+	if err != nil {
 		log.Fatal(err)
 	}
 }

@@ -1,6 +1,7 @@
 package pupservice
 
 import (
+	"bytes"
 	"context"
 	"io"
 
@@ -15,6 +16,7 @@ type PupService interface {
 	KennelPups(pupIDs []int) error
 	FilterPups(pups []*pup.Pup) ([]*pup.Pup, error)
 	PupReport(total int, pups []*pup.Pup, wr io.Writer) error
+	Mailman(buf *bytes.Buffer, recipients []string) error
 }
 
 func New(f fetcher.Fetcher, kennelPath, staticPath string) PupService {

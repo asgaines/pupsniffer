@@ -2,6 +2,7 @@ package pup
 
 import (
 	"fmt"
+	"html"
 	"log"
 	"strconv"
 	"strings"
@@ -251,6 +252,10 @@ func (p Pup) barkDesc() {
 	if p.Description.Valid {
 		fmt.Printf("Here's what people say about me: \"%s\n\"", p.Description.Value)
 	}
+}
+
+func (p Pup) BarkDesc() string {
+	return html.UnescapeString(p.Description.Value)
 }
 
 func (p Pup) barkReasonForSurrender() {

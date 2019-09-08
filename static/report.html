@@ -4,7 +4,7 @@
         <title>Pupsniffer</title>
     </head>
     <body style="background: #EAEAFF;">
-        <div style="width: 1400px; margin-left: auto; margin-right: auto;">
+        <div style="margin-left: auto; margin-right: auto;">
             <div style="background: #FFFFFF; margin-top: 10px; margin-bottom: 10px; padding: 20px; text-align: center;">
                 <h1>Pupsniffer</h1>
                 <h3>get sniffed</h3>
@@ -31,17 +31,11 @@
                     <p>I've been here for {{.BarkTimeSince}} ({{.LastIntakeDate}})</p>
                     
                     {{if .Description.Valid}}
-                        <p>Here's what people say about me: "{{.Description.Value}}"</p>
+                        <p>Here's what people say about me: "{{.BarkDesc}}"</p>
                     {{end}}
                     
                     {{if .SpecialNeeds.Valid}}
                         <p>My special needs: {{.SpecialNeeds.Value}}</p>
-                    {{end}}
-
-                    {{if .BarkDeclawed}}
-                        <p>I've been declawed</p>
-                    {{else}}
-                        <p>I haven't been declawed</p>
                     {{end}}
 
                     <p>Have I been housetrained? {{.Housetrained}}</p>
@@ -84,15 +78,15 @@
                             <p>My application url: {{.AdoptionApplicationURL.Value}}</p>
                     {{end}}
 
+                    {{if .ChipNumber.Valid}}
+                        <p>My chip number is {{.ChipNumber.Value}}</p>
+                    {{end}}
+
                     {{range .BarkPics}}
                         <img src="{{.}}" />
                     {{end}}
 
                     <p>(My ID number is {{.ID}})</p>
-
-                    {{if .ChipNumber.Valid}}
-                        <p>(My chip number is {{.ChipNumber.Value}})</p>
-                    {{end}}
                 </div>
             {{end}}
         </div>

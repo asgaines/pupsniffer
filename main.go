@@ -92,11 +92,15 @@ func main() {
 			os.Exit(0)
 		}
 
-		pupIDs = newPupIDs
-	}
+		if err := pupsvc.KennelPups(pupIDs); err != nil {
+			log.Fatal(err)
+		}
 
-	if err := pupsvc.KennelPups(pupIDs); err != nil {
-		log.Fatal(err)
+		pupIDs = newPupIDs
+	} else {
+		if err := pupsvc.KennelPups(pupIDs); err != nil {
+			log.Fatal(err)
+		}
 	}
 
 	pups, err := pupsvc.FetchPups(ctx, pupIDs)

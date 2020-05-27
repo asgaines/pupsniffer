@@ -7,7 +7,7 @@ import (
 )
 
 func (p pupsvc) Mailman(buf *bytes.Buffer, recipients []string) error {
-	subject := "Subject: New Pups at the Boulder Humane Society!\n"
+	subject := "Subject: New Pup(s) at the Boulder Humane Society!\n"
 	mime := "MIME-version: 1.0;\nContent-Type: text/html; charset=\"UTF-8\";\n\n"
 	body := buf.Bytes()
 
@@ -30,7 +30,7 @@ func (p pupsvc) Mailman(buf *bytes.Buffer, recipients []string) error {
 	go func() {
 		for _, recipient := range recipients {
 			sem <- struct{}{}
-			go func() {
+			go func(recipient string) {
 				errs <- smtp.SendMail(
 					"smtp.gmail.com:587",
 					auth,
@@ -39,7 +39,7 @@ func (p pupsvc) Mailman(buf *bytes.Buffer, recipients []string) error {
 					msg,
 				)
 				<-sem
-			}()
+			}(recipient)
 		}
 	}()
 

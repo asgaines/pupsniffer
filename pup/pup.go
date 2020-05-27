@@ -131,13 +131,32 @@ func (p Pup) IsAvailable() (bool, error) {
 	return p.OnHold == "No", nil
 }
 
-func (p Pup) IsRightAge() (bool, error) {
-	months, err := strconv.Atoi(p.Age)
+func (p Pup) IsOlderAndBigger() (bool, error) {
+	months, err := p.AgeInMonths()
 	if err != nil {
 		return false, err
 	}
 
-	return months >= 36 && months < 84, nil
+	weight, err := p.getWeight()
+	if err != nil {
+		return false, err
+	}
+
+	return months >= 36 && months < 84 && weight >= 35, nil
+}
+
+func (p Pup) AgeInMonths() (int, error) {
+	months, err := strconv.Atoi(p.Age)
+	return months, err
+}
+
+func (p Pup) IsPuppy() (bool, error) {
+	months, err := p.AgeInMonths()
+	if err != nil {
+		return false, err
+	}
+
+	return months <= 12, nil
 }
 
 func (p Pup) BarkGreeting() {
@@ -212,6 +231,20 @@ func (p Pup) barkSex() {
 
 func (p Pup) barkWeight() {
 	fmt.Printf("I'm %s\n", p.BodyWeight)
+}
+
+func (p Pup) getWeight() (int, error) {
+	weightParts := strings.Split(p.BodyWeight, " ")
+	if len(weightParts) < 1 {
+		return 0, fmt.Errorf("unexpected weight: %s", p.BodyWeight)
+	}
+
+	weight, err := strconv.Atoi(weightParts[0])
+	if err != nil {
+		return 0, fmt.Errorf("expected int for first part of weight: %s. err: %s", p.BodyWeight, err)
+	}
+
+	return weight, nil
 }
 
 func (p Pup) BarkBreed() string {

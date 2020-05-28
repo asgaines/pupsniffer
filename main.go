@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bufio"
 	"bytes"
 	"context"
 	"flag"
@@ -128,16 +127,11 @@ func main() {
 	if len(pups) > 0 && email {
 		recipients := []string{
 			"andrew.s.gaines@gmail.com",
+			// "kelley36@gmail.com",
+			// "susannahgaines@gmail.com",
 		}
 		if err := pupsvc.Mailman(buf, recipients); err != nil {
 			log.Fatal(err)
 		}
-	}
-
-	outf := bufio.NewWriter(os.Stdout)
-	defer outf.Flush()
-	_, err = outf.Write(buf.Bytes())
-	if err != nil {
-		log.Fatal(err)
 	}
 }

@@ -90,7 +90,7 @@ type Pup struct {
 	LivedWithAnimalTypes null.String `json:"LivedWithAnimalTypes"` // {
 	// "0": "\n  "
 	// },
-	BodyWeight  string      `json:"BodyWeight"`  // "82 pounds",
+	BodyWeight  null.String `json:"BodyWeight"`  // "82 pounds",
 	DateOfBirth string      `json:"DateOfBirth"` // "2016-05-20",
 	ARN         null.String `json:"ARN"`         // {
 	// "0": "\n  "
@@ -230,18 +230,22 @@ func (p Pup) barkSex() {
 }
 
 func (p Pup) barkWeight() {
-	fmt.Printf("I'm %s\n", p.BodyWeight)
+	fmt.Printf("I'm %s\n", p.BodyWeight.Value)
 }
 
 func (p Pup) getWeight() (int, error) {
-	weightParts := strings.Split(p.BodyWeight, " ")
+	if !p.BodyWeight.Valid {
+		return -1, nil
+	}
+
+	weightParts := strings.Split(p.BodyWeight.Value, " ")
 	if len(weightParts) < 1 {
-		return 0, fmt.Errorf("unexpected weight: %s", p.BodyWeight)
+		return 0, fmt.Errorf("unexpected weight: %s", p.BodyWeight.Value)
 	}
 
 	weight, err := strconv.Atoi(weightParts[0])
 	if err != nil {
-		return 0, fmt.Errorf("expected int for first part of weight: %s. err: %s", p.BodyWeight, err)
+		return 0, fmt.Errorf("expected int for first part of weight: %s. err: %s", p.BodyWeight.Value, err)
 	}
 
 	return weight, nil

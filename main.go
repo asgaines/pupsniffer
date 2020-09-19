@@ -129,6 +129,7 @@ func main() {
 			"andrew.s.gaines@gmail.com",
 			"kelley36@gmail.com",
 			"susannahgaines@gmail.com",
+			"ajneumann@yahoo.com",
 		}
 		if err := pupsvc.Mailman(buf, recipients); err != nil {
 			log.Fatal(err)

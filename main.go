@@ -55,6 +55,8 @@ func main() {
 
 	flag.Parse()
 
+	log.Printf("filtering: %v, new only: %v, email: %v", filterPups, newOnly, email)
+
 	if err := os.MkdirAll(kennelPath, os.ModePerm); err != nil {
 		log.Fatal(err)
 	}
